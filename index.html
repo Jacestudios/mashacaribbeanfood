@@ -976,24 +976,31 @@ document.getElementById('dt').min = new Date().toISOString().split('T')[0];
 
 function bookTable() {
   const fn = document.getElementById('fn').value.trim();
+  const ln = document.getElementById('ln').value.trim();
   const em = document.getElementById('em').value.trim();
   const dt = document.getElementById('dt').value;
   const ti = document.getElementById('ti').value;
   const gu = document.getElementById('gu').value;
 
   if (!fn || !em || !dt || !ti || !gu) {
-    alert('Vul alle verplichte velden in om te reserveren.');
+    alert('Vul alles in');
     return;
   }
 
-  document.getElementById('sb').classList.add('show');
-  const btn = document.querySelector('.form-btn');
-  btn.disabled = true;
-  btn.style.opacity = '0.4';
-  btn.style.cursor = 'default';
+  const reservering = {
+    naam: fn + " " + ln,
+    email: em,
+    datum: dt,
+    tijd: ti,
+    personen: gu,
+    status: "gepland"
+  };
 
-  ['fn','ln','em','ph','dt','no'].forEach(id => document.getElementById(id).value = '');
-  ['ti','gu'].forEach(id => document.getElementById(id).selectedIndex = 0);
+  let data = JSON.parse(localStorage.getItem("reserveringen")) || [];
+  data.push(reservering);
+  localStorage.setItem("reserveringen", JSON.stringify(data));
+
+  document.getElementById('sb').classList.add('show');
 }
 </script>
 </body>
