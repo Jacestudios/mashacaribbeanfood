@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Mijn Reserveringen</title>
+<style>
+body { font-family: Arial; padding:40px; background:#faf3e0; }
+.card {
+  background:#fff;
+  padding:20px;
+  margin-bottom:10px;
+  border-radius:10px;
+}
+</style>
+</head>
+<body>
+
+<h2>Mijn reserveringen</h2>
+
+<input id="email" placeholder="Voer je email in">
+<button onclick="laad()">Bekijk</button>
+
+<div id="lijst"></div>
+
+<script>
+function laad() {
+  const email = document.getElementById('email').value;
+  const data = JSON.parse(localStorage.getItem("reserveringen")) || [];
+  const lijst = document.getElementById('lijst');
+  lijst.innerHTML = "";
+
+  const filtered = data.filter(r => r.email === email);
+
+  if(filtered.length === 0){
+    lijst.innerHTML = "Geen reserveringen gevonden";
+    return;
+  }
+
+  filtered.forEach(r => {
+    lijst.innerHTML += `
+      <div class="card">
+        <b>${r.naam}</b><br>
+        ${r.datum} - ${r.tijd}<br>
+        Personen: ${r.personen}<br>
+        Status: ${r.status}
+      </div>
+    `;
+  });
+}
+</script>
+
+</body>
+</html>
