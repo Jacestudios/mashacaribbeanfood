@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Admin</title>
+<style>
+body { font-family: Arial; padding:40px; background:#fff; }
+
+.card {
+  border:1px solid #ccc;
+  padding:15px;
+  margin-bottom:10px;
+  border-radius:10px;
+}
+
+button {
+  margin-top:10px;
+  padding:5px 10px;
+  border:none;
+  cursor:pointer;
+}
+
+.check { background:green; color:#fff; }
+.delete { background:red; color:#fff; }
+</style>
+</head>
+<body>
+
+<h2>Admin dashboard</h2>
+
+<div id="lijst"></div>
+
+<script>
+function laad() {
+  const data = JSON.parse(localStorage.getItem("reserveringen")) || [];
+  const lijst = document.getElementById('lijst');
+  lijst.innerHTML = "";
+
+  data.forEach((r, i) => {
+    lijst.innerHTML += `
+      <div class="card">
+        <b>${r.naam}</b><br>
+        ${r.email}<br>
+        ${r.datum} - ${r.tijd}<br>
+        Personen: ${r.personen}<br>
+        Status: ${r.status}<br>
+
+        <button class="check" onclick="check(${i})">Ingecheckt</button>
+        <button class="delete" onclick="del(${i})">Verwijder</button>
+      </div>
+    `;
+  });
+}
+
+function check(i){
+  let data = JSON.parse(localStorage.getItem("reserveringen"));
+  data[i].status = "ingecheckt";
+  localStorage.setItem("reserveringen", JSON.stringify(data));
+  laad();
+}
+
+function del(i){
+  let data = JSON.parse(localStorage.getItem("reserveringen"));
+  data.splice(i,1);
+  localStorage.setItem("reserveringen", JSON.stringify(data));
+  laad();
+}
+
+laad();
+</script>
+
+</body>
+</html>
